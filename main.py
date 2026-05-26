@@ -286,3 +286,121 @@ print("RESULTADOS MODELO MANUAL")
 print("-")
 
 print("Accuracy:", accuracy)
+
+# 10-FOLD CROSS VALIDATION
+
+from sklearn.model_selection import KFold
+
+
+kf = KFold(
+    n_splits=10,
+    shuffle=True,
+    random_state=42
+)
+
+accuracies = []
+
+
+for train_index, test_index in kf.split(X_iris):
+
+    X_train = X_iris.values[train_index]
+    X_test = X_iris.values[test_index]
+
+    y_train = y_iris.values[train_index]
+    y_test = y_iris.values[test_index]
+
+    modelo = GaussianNaiveBayes()
+
+    modelo.fit(X_train, y_train)
+
+    predicciones = modelo.predict(X_test)
+
+    accuracy = accuracy_score(
+        y_test,
+        predicciones
+    )
+
+    accuracies.append(accuracy)
+
+
+print("\n-")
+print("10-FOLD CROSS VALIDATION")
+print("-")
+
+print("Accuracies:", accuracies)
+
+print("Promedio:", np.mean(accuracies))
+
+# LEAVE ONE OUT
+
+from sklearn.model_selection import LeaveOneOut
+
+
+loo = LeaveOneOut()
+
+accuracies_loo = []
+
+
+for train_index, test_index in loo.split(X_iris):
+
+    X_train = X_iris.values[train_index]
+    X_test = X_iris.values[test_index]
+
+    y_train = y_iris.values[train_index]
+    y_test = y_iris.values[test_index]
+
+    modelo = GaussianNaiveBayes()
+
+    modelo.fit(X_train, y_train)
+
+    predicciones = modelo.predict(X_test)
+
+    accuracy = accuracy_score(
+        y_test,
+        predicciones
+    )
+
+    accuracies_loo.append(accuracy)
+
+
+print("\n-")
+print("LEAVE ONE OUT")
+print("-")
+
+print("Promedio:", np.mean(accuracies_loo))
+
+# COMPARACION CON SKLEARN
+
+from sklearn.naive_bayes import GaussianNB
+
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X_iris.values,
+    y_iris.values,
+    test_size=0.2,
+    random_state=42
+)
+
+
+modelo_sklearn = GaussianNB()
+
+modelo_sklearn.fit(
+    X_train,
+    y_train
+)
+
+predicciones_sklearn = modelo_sklearn.predict(
+    X_test
+)
+
+accuracy_sklearn = accuracy_score(
+    y_test,
+    predicciones_sklearn
+)
+
+
+print("\n-")
+print("SKLEARN GAUSSIAN NB")
+print("-")
+
+print("Accuracy sklearn:", accuracy_sklearn)
