@@ -147,3 +147,34 @@ graficas_kde(X_iris, y_iris, "IRIS")
 
 print("\nGenerando KDE WINE...")
 graficas_kde(X_wine, y_wine, "WINE")
+
+# MATRICES DE CORRELACION
+
+def correlacion_por_clase(X, y, nombre_dataset):
+
+    clases = y.unique()
+
+    for c in clases:
+
+        datos_clase = X[y == c]
+
+        plt.figure(figsize=(10, 8))
+
+        sns.heatmap(
+            datos_clase.corr(),
+            annot=True,
+            cmap='coolwarm'
+        )
+
+        plt.title(f'Correlacion Clase {c} - {nombre_dataset}')
+
+        plt.tight_layout()
+
+        plt.show()
+
+
+print("\nGenerando correlaciones IRIS...")
+correlacion_por_clase(X_iris, y_iris, "IRIS")
+
+print("\nGenerando correlaciones WINE...")
+correlacion_por_clase(X_wine, y_wine, "WINE")
