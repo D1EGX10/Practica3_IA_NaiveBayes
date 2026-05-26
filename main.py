@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 from sklearn.datasets import load_iris
 from sklearn.datasets import load_wine
@@ -108,3 +110,40 @@ print("ESTADISTICAS WINE")
 print("-")
 
 estadisticas_por_clase(X_wine, y_wine)
+
+# GRAFICAS KDE
+
+def graficas_kde(X, y, nombre_dataset):
+
+    clases = y.unique()
+
+    for columna in X.columns:
+
+        plt.figure(figsize=(8, 5))
+
+        for c in clases:
+
+            sns.kdeplot(
+                X[y == c][columna],
+                label=f'Clase {c}',
+                fill=True
+            )
+
+        plt.title(f'KDE - {columna} ({nombre_dataset})')
+
+        plt.xlabel(columna)
+
+        plt.ylabel("Densidad")
+
+        plt.legend()
+
+        plt.grid()
+
+        plt.show()
+
+
+print("\nGenerando KDE IRIS...")
+graficas_kde(X_iris, y_iris, "IRIS")
+
+print("\nGenerando KDE WINE...")
+graficas_kde(X_wine, y_wine, "WINE")
