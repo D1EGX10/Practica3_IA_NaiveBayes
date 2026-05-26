@@ -148,7 +148,7 @@ graficas_kde(X_iris, y_iris, "IRIS")
 print("\nGenerando KDE WINE...")
 graficas_kde(X_wine, y_wine, "WINE")
 
-# MATRICES DE CORRELACION
+# MATRICES DE CORRELACIONgi
 
 def correlacion_por_clase(X, y, nombre_dataset):
 
@@ -178,3 +178,111 @@ correlacion_por_clase(X_iris, y_iris, "IRIS")
 
 print("\nGenerando correlaciones WINE...")
 correlacion_por_clase(X_wine, y_wine, "WINE")
+
+# GAUSSIAN NAIVE BAYES
+# IMPLEMENTACION MANUAL
+
+class GaussianNaiveBayes:
+
+    def fit(self, X, y):
+
+        self.clases = np.unique(y)
+
+        self.media = {}
+
+        self.varianza = {}
+
+        self.priori = {}
+
+        for c in self.clases:
+
+            X_c = X[y == c]
+
+            self.media[c] = np.mean(X_c, axis=0)
+
+            self.varianza[c] = np.var(X_c, axis=0)
+
+            self.priori[c] = len(X_c) / len(X)
+
+
+    def gaussian(self, clase, x):
+
+        media = self.media[clase]
+
+        varianza = self.varianza[clase]
+
+        numerador = np.exp(
+            -((x - media) ** 2) / (2 * varianza)
+        )
+
+        denominador = np.sqrt(
+            2 * np.pi * varianza
+        )
+
+        return numerador / denominador
+
+
+    def predict(self, X):
+
+        predicciones = []
+
+        for x in X:
+
+            probabilidades = []
+
+            for c in self.clases:
+
+                priori = np.log(
+                    self.priori[c]
+                )
+
+                verosimilitud = np.sum(
+                    np.log(
+                        self.gaussian(c, x)
+                    )
+                )
+
+                posterior = priori + verosimilitud
+
+                probabilidades.append(
+                    posterior
+                )
+
+            predicciones.append(
+                self.clases[
+                    np.argmax(probabilidades)
+                ]
+            )
+
+        return np.array(predicciones)
+
+# PRUEBA DEL MODELO
+
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X_iris.values,
+    y_iris.values,
+    test_size=0.2,
+    random_state=42
+)
+
+
+modelo = GaussianNaiveBayes()
+
+modelo.fit(X_train, y_train)
+
+predicciones = modelo.predict(X_test)
+
+accuracy = accuracy_score(
+    y_test,
+    predicciones
+)
+
+print("\n-")
+print("RESULTADOS MODELO MANUAL")
+print("-")
+
+print("Accuracy:", accuracy)
