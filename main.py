@@ -69,3 +69,42 @@ print("PROBABILIDADES A PRIORI WINE")
 print("-")
 
 probabilidades_priori(y_wine)
+
+# MEDIA Y DESVIACION ESTANDAR
+
+def estadisticas_por_clase(X, y):
+
+    clases = y.unique()
+
+    for c in clases:
+
+        print("\n-")
+        print(f"CLASE {c}")
+        print("-")
+
+        datos_clase = X[y == c]
+
+        medias = datos_clase.mean()
+
+        desviaciones = datos_clase.std()
+
+        tabla = pd.DataFrame({
+            "Media": medias,
+            "Desviacion Estandar": desviaciones
+        })
+
+        print(tabla)
+
+
+print("\n\n-")
+print("ESTADISTICAS IRIS")
+print("-")
+
+estadisticas_por_clase(X_iris, y_iris)
+
+
+print("\n\n-")
+print("ESTADISTICAS WINE")
+print("-")
+
+estadisticas_por_clase(X_wine, y_wine)
