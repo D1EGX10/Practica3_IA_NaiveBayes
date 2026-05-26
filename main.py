@@ -14,7 +14,7 @@ X_iris = pd.DataFrame(
 
 y_iris = pd.Series(iris.target)
 
-print("===== IRIS =====")
+print("_IRIS_")
 print(X_iris.head())
 
 print("\nClases:")
@@ -31,8 +31,41 @@ X_wine = pd.DataFrame(
 
 y_wine = pd.Series(wine.target)
 
-print("\n===== WINE =====")
+print("\n_WINE_")
 print(X_wine.head())
 
 print("\nClases:")
 print(y_wine.unique())
+
+# PROBABILIDADES A PRIORI
+
+def probabilidades_priori(y):
+
+    clases = y.unique()
+
+    total = len(y)
+
+    for c in clases:
+
+        cantidad = len(y[y == c])
+
+        probabilidad = cantidad / total
+
+        print(f"Clase {c}")
+        print(f"Muestras: {cantidad}")
+        print(f"Probabilidad a priori: {probabilidad:.4f}")
+        print()
+
+
+print("\n-")
+print("PROBABILIDADES A PRIORI IRIS")
+print("-")
+
+probabilidades_priori(y_iris)
+
+
+print("\n-")
+print("PROBABILIDADES A PRIORI WINE")
+print("-")
+
+probabilidades_priori(y_wine)
