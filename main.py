@@ -139,6 +139,8 @@ def graficas_kde(X, y, nombre_dataset):
 
         plt.grid()
 
+        plt.tight_layout()
+
         plt.show()
 
 
@@ -148,7 +150,7 @@ graficas_kde(X_iris, y_iris, "IRIS")
 print("\nGenerando KDE WINE...")
 graficas_kde(X_wine, y_wine, "WINE")
 
-# MATRICES DE CORRELACIONgi
+# MATRICES DE CORRELACION
 
 def correlacion_por_clase(X, y, nombre_dataset):
 
@@ -209,7 +211,7 @@ class GaussianNaiveBayes:
 
         media = self.media[clase]
 
-        varianza = self.varianza[clase]
+        varianza = self.varianza[clase] + 1e-9
 
         numerador = np.exp(
             -((x - media) ** 2) / (2 * varianza)
@@ -285,7 +287,7 @@ print("\n-")
 print("RESULTADOS MODELO MANUAL")
 print("-")
 
-print("Accuracy:", accuracy)
+print(f"Accuracy: {accuracy:.4f}")
 
 # 10-FOLD CROSS VALIDATION
 
@@ -329,7 +331,7 @@ print("-")
 
 print("Accuracies:", accuracies)
 
-print("Promedio:", np.mean(accuracies))
+print(f"Promedio: {np.mean(accuracies):.4f}")
 
 # LEAVE ONE OUT
 
@@ -367,7 +369,7 @@ print("\n-")
 print("LEAVE ONE OUT")
 print("-")
 
-print("Promedio:", np.mean(accuracies_loo))
+print(f"Promedio: {np.mean(accuracies_loo):.4f}")
 
 # COMPARACION CON SKLEARN
 
@@ -403,4 +405,4 @@ print("\n-")
 print("SKLEARN GAUSSIAN NB")
 print("-")
 
-print("Accuracy sklearn:", accuracy_sklearn)
+print(f"Accuracy sklearn: {accuracy_sklearn:.4f}")
